@@ -18,7 +18,14 @@
 #define QTY_CUSTOMER 100
 #define QTY_PUBLICATION 1000
 
-
+/** \brief count active Publication
+*
+* \param array Publication*
+* \param pubLen int
+* \return int Return (-1) if Error [Invalid length or NULL pointer or if can't
+find a Customer] - (0) if Ok
+*
+*/
 int info_paused(Publication* arrayPub, int pubLen)
 {
 	int counter=0;
@@ -67,7 +74,16 @@ int info_printOneCustByPubliID(Publication* arrayPub, int lenPubli, Customer* ar
 	}
 	return retorno;
 }
-
+/** \brief print customers whit their publications
+*
+* \param arrayPub Publication*
+* \param lenPubli int
+* \param arrayCust Customer*
+* \param lenCust int
+* \return int Return (-1) if Error [Invalid length or NULL pointer or if can't
+find a Customer] - (0) if Ok
+*
+*/
 int info_printCustAndPubs(Publication* arrayPub, int lenPubli, Customer* arrayCust, int lenCust)
 {
 	int retorno =-1;
@@ -98,7 +114,16 @@ int info_printCustAndPubs(Publication* arrayPub, int lenPubli, Customer* arrayCu
 	return retorno;
 }
 
-
+/** \brief in process
+*
+* \param
+* \param
+* \param
+* \param
+* \return int Return (-1) if Error [Invalid length or NULL pointer or if can't
+find a Customer] - (0) if Ok
+*
+*/
 int info_clientWithHighestPubli(Publication* arrayPub, int lenPubli, Customer* arrayCust, int lenCust)
 {
 	int retorno=-1;
