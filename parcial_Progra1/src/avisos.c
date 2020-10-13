@@ -262,12 +262,12 @@ int pub_printArray(Publication* array, int len)
 	return 0;
 }
 
-/** \brief print the content of Customers array while isPuased = 0
+/** \brief print the content of Customers array while isPaused (0)
 *
 * \param array Customer*
 * \param len int
-* \return int
-*
+* \return int Return (-1) if Error [Invalid length or NULL pointer or if can't
+find a Customer] - (0) if Ok
 */
 int pub_printActive(Publication* array, int len)
 {
@@ -287,6 +287,13 @@ int pub_printActive(Publication* array, int len)
 	return retorno;
 }
 
+/** \brief print the content of Customers array while isPaused (-1)
+*
+* \param array Customer*
+* \param len int
+* \return int Return (-1) if Error [Invalid length or NULL pointer or if can't
+find a Customer] - (0) if Ok
+*/
 int pub_printInactive(Publication* array, int len)
 {
 	int retorno=-1;
@@ -305,6 +312,14 @@ int pub_printInactive(Publication* array, int len)
 	return retorno;
 }
 
+/** \brief print the content of Publication by customer ID (-1)
+*
+* \param array Publication*
+* \param len int
+* \param idCust int
+* \return int Return (-1) if Error [Invalid length or NULL pointer or if can't
+find a Customer] - (0) if Ok
+*/
 int pub_printByCustId(Publication* array, int len, int idCust)
 {
 	int retorno=-1;
@@ -322,7 +337,15 @@ int pub_printByCustId(Publication* array, int len, int idCust)
 	}
 	return retorno;
 }
-
+/** \brief Remove all the publications from one customer by customer Id (put isEmpty Flag in 1)
+*
+* \param array Publiation*
+* \param len int
+* \param idCust int
+* \return int Return (-1) if Error [Invalid length or NULL pointer or if can't
+find a Customer] - (0) if Ok
+*
+*/
 int pub_eraseByCustId(Publication* array, int len, int idCust)
 {
 	int retorno=-1;
@@ -342,6 +365,14 @@ int pub_eraseByCustId(Publication* array, int len, int idCust)
 	return retorno;
 }
 
+/**
+ * \brief sort the array by id
+* \param array Customer*
+* \param len int
+* \return int Return (-1) if Error [Invalid length or NULL pointer or if can't
+find a Customer] - (0) if Ok
+*
+ */
 int pub_sortArray(Publication* arrayPub, int len)
 {
 	int flagSwap;

@@ -193,7 +193,7 @@ int cli_remove(Customer* array, int len, int id)
 }
 
 /**
- * \brief sort the array first by name and then by sector
+ * \brief sort the array  by name
 * \param array Customer*
 * \param len int
 * \return int Return (-1) if Error [Invalid length or NULL pointer or if can't
