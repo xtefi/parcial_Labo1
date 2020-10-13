@@ -99,7 +99,7 @@ int pub_addNew(Publication* array, int len, int index, int* id, int idCust)
 			buffer.isPaused=0;
 			array[index]=buffer;
 			(*id)++;
-			printf("ID   |RUBRO |TEXTO\n");
+			printf("ID   |ID clte |RUBRO |TEXTO\n");
 			pub_printOne(&array[index]);
 		}
 	}
@@ -115,7 +115,7 @@ int pub_printOne(Publication* array)
 {
 	if(array != NULL)
 	{
-		printf("%-4i |%-4i |%s\n", array->idPubli, array->rubro, array->text);
+		printf("%-4i |%-15i |%-15i |%-15s\n", array->idClient,array->idPubli, array->rubro, array->text);
 	}
 	return 0;
 }
@@ -146,7 +146,7 @@ int pub_findById(Publication* array, int len, int value)
 	}
 	return retorno;
 }
-/** \brief Remove a Employee by Id (put isEmpty Flag in 1)
+/** \brief pause a publication by Id (put isPaused Flag in 1)
 *
 * \param array Employee*
 * \param len int
@@ -164,6 +164,8 @@ int pub_pause(Publication* array, int len, int idPubli)
 		{
 			if(array[i].idPubli == idPubli && array[i].isEmpty==0 && array[i].isPaused==0)
 			{
+
+				//cli_printOne(array[i].idClient);
 				array[i].isEmpty=0;
 				array[i].isPaused=1;
 				retorno=0;
@@ -174,6 +176,15 @@ int pub_pause(Publication* array, int len, int idPubli)
 	return retorno;
 }
 
+/** \brief unpause a publication by Id (put isPaused Flag in 0)
+*
+* \param array Employee*
+* \param len int
+* \param id int
+* \return int Return (-1) if Error [Invalid length or NULL pointer or if can't
+find a employee] - (0) if Ok
+*
+*/
 
 int pub_unPause(Publication* array, int len, int idPubli)
 {
@@ -194,7 +205,19 @@ int pub_unPause(Publication* array, int len, int idPubli)
 	return retorno;
 }
 
-
+/** \brief upload information for testing
+*
+* \param list Customer*
+* \param len int
+* param index int
+* \param idPub int
+* \param idCli int
+* param rubro int
+* param text char
+* \return int Return (-1) if Error [Invalid length or NULL pointer or if can't
+find a Customer] - (0) if Ok
+*
+*/
 int pub_hardcode(Publication* array,int len, int index, int* idPub, int idCli, int rubro, char* text)
 {
 	int retorno = -1;
@@ -206,6 +229,7 @@ int pub_hardcode(Publication* array,int len, int index, int* idPub, int idCli, i
 		bufferPub.rubro=rubro;
 		strncpy(bufferPub.text,text,TEXT_LEN);
 		retorno = 0;
+		bufferPub.idClient=idCli;
 		bufferPub.idPubli = *idPub;
 		bufferPub.isEmpty = 0;
 		bufferPub.isPaused=0;
@@ -226,7 +250,7 @@ int pub_printArray(Publication* array, int len)
 {
 	if(array != NULL && len>0)
 	{
-		printf("ID   |Rubro |Texto   |\n");
+		printf("ID   |ID publicidad   |RUBRO           |TEXTO\n");
 		for(int i=0 ; i<len ; i++)
 		{
 			if(array[i].isEmpty==0)
@@ -238,11 +262,19 @@ int pub_printArray(Publication* array, int len)
 	return 0;
 }
 
+/** \brief print the content of Customers array while isPuased = 0
+*
+* \param array Customer*
+* \param len int
+* \return int
+*
+*/
 int pub_printActive(Publication* array, int len)
 {
+	int retorno=-1;
 	if(array != NULL && len>0)
 	{
-		printf("ID   |Rubro |Texto   |\n");
+		printf("ID   |ID publicidad   |RUBRO           |TEXTO\n");
 		for(int i=0 ; i<len ; i++)
 		{
 			if(array[i].isEmpty==0 && array[i].isPaused==0)
@@ -250,8 +282,9 @@ int pub_printActive(Publication* array, int len)
 				pub_printOne(&array[i]);
 			}
 		}
+		retorno=0;
 	}
-	return 0;
+	return retorno;
 }
 
 int pub_printInactive(Publication* array, int len)
@@ -259,7 +292,7 @@ int pub_printInactive(Publication* array, int len)
 	int retorno=-1;
 	if(array != NULL && len>0)
 	{
-		printf("ID   |Rubro |Texto   |\n");
+		printf("ID   |ID publicidad   |RUBRO           |TEXTO\n");
 		for(int i=0 ; i<len ; i++)
 		{
 			if(array[i].isEmpty==0 && array[i].isPaused==1)
@@ -268,6 +301,74 @@ int pub_printInactive(Publication* array, int len)
 				retorno =0;
 			}
 		}
+	}
+	return retorno;
+}
+
+int pub_printByCustId(Publication* array, int len, int idCust)
+{
+	int retorno=-1;
+	if(array != NULL && len>0)
+	{
+		printf("Publicaciones activas: \nID   |ID publicidad   |RUBRO           |TEXTO\n");
+		for(int i=0 ; i<len ; i++)
+		{
+			if(array[i].isEmpty==0 && array[i].idClient == idCust)
+			{
+				pub_printOne(&array[i]);
+				retorno =0;
+			}
+		}
+	}
+	return retorno;
+}
+
+int pub_eraseByCustId(Publication* array, int len, int idCust)
+{
+	int retorno=-1;
+	if(array != NULL && len > 0)
+	{
+		for(int i=0 ; i<len ; i++)
+		{
+			if(array[i].idPubli == idCust && array[i].isEmpty==0)
+			{
+				array[i].isEmpty=1;
+				array[i].isPaused=1;
+				retorno=0;
+				break;
+			}
+		}
+	}
+	return retorno;
+}
+
+int pub_sortArray(Publication* arrayPub, int len)
+{
+	int flagSwap;
+	int retorno=-1;
+	Publication buffer;
+
+	if(arrayPub != NULL && len > 0)
+	{
+		do
+		{
+			flagSwap = 0;
+			for(int i=0;i<len-1;i++)
+			{
+				if((arrayPub[i].isEmpty==1 || arrayPub[i+1].isEmpty==1) && (arrayPub[i].isPaused == 1 || arrayPub[i+1].isPaused == 1))
+				{
+					continue;
+				}
+				if(arrayPub[i].idClient > arrayPub[i+1].idClient)
+				{
+					flagSwap = 1;
+					buffer = arrayPub[i];
+					arrayPub[i] = arrayPub[i+1];
+					arrayPub[i+1]=buffer;
+				}
+			}
+			len--;
+		}while(flagSwap);
 	}
 	return retorno;
 }
