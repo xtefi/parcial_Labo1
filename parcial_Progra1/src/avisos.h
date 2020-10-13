@@ -31,5 +31,8 @@ int pub_hardcode(Publication* array,int len, int index, int* idPub, int idCli, i
 int pub_printArray(Publication* array, int len);
 int pub_printActive(Publication* array, int len);
 int pub_printInactive(Publication* array, int len);
+int pub_printByCustId(Publication* array, int len, int idCust);
+int pub_eraseByCustId(Publication* array, int len, int idCust);
+int pub_sortArray(Publication* arrayPub, int len);
 
 #endif /* AVISOS_H_ */
