@@ -439,3 +439,37 @@ int pub_contadorRubro(Publication* array, int len, int rubro)
 	}
 	return counter;
 }
+
+int pub_contadorAvisosActivos(Publication* array, int len, int idCustomer)
+{
+	int counter=0;
+
+	if(array != NULL && len >0 && idCustomer >=0)
+	{
+		for(int i=0 ; i<len ; i++)
+		{
+			if(array[i].isEmpty == 0 && array[i].idClient == idCustomer && array[i].isPaused == 0)
+			{
+				counter++;
+			}
+		}
+	}
+	return counter;
+}
+
+int pub_contadorAvisosPausados(Publication* array, int len, int idCustomer)
+{
+	int counter=0;
+
+	if(array != NULL && len >0 && idCustomer >=0)
+	{
+		for(int i=0 ; i<len ; i++)
+		{
+			if(array[i].isEmpty == 0 && array[i].idClient == idCustomer && array[i].isPaused == 0)
+			{
+				counter++;
+			}
+		}
+	}
+	return counter;
+}

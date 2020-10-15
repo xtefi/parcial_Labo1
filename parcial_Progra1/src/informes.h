@@ -17,5 +17,6 @@ int info_printOneCustByPubliID(Publication* arrayPub, int lenPubli, Customer* ar
 int info_printCustAndPubs(Publication* arrayPub, int lenPubli, Customer* arrayCust, int lenCust);
 void info_mostPublish(Publication* arrayPub, int lenPubli, Customer* arrayCust, int lenCust);
 void info_maxRubro(Publication* arrayPub, int lenPubli, Customer* arrayCust, int lenCust);
-
+void info_activePub(Publication* arrayPub, int lenPubli, Customer* arrayCust, int lenCust);
+void info_pausedPub(Publication* arrayPub, int lenPubli, Customer* arrayCust, int lenCust);
 #endif /* INFORMES_H_ */

@@ -75,7 +75,7 @@ int info_printOneCustByPubliID(Publication* arrayPub, int lenPubli, Customer* ar
 		{
 			if(arrayCust[i].id == retorno)
 			{
-				printf("\nEsta publicacion pertenece a: \n");
+
 				cli_printOne(&arrayCust[i]);
 				break;
 			}
@@ -218,5 +218,84 @@ void info_maxRubro(Publication* arrayPub, int lenPubli, Customer* arrayCust, int
 }
 
 
+void info_activePub(Publication* arrayPub, int lenPubli, Customer* arrayCust, int lenCust)
+{
+	int maximo;
+	int cantidad;
+	int idMaximo;
+	int flag;
 
+	if(arrayPub != NULL && lenPubli>0 && arrayCust != NULL && lenCust>0)
+	{
+		for (int i=0 ; i<lenCust ; i++)
+		{
+			if(arrayPub[i].isEmpty == 0 && arrayPub[i].isPaused == 0)
+			{
+				cantidad=pub_contadorAvisosActivos(arrayPub, lenPubli, arrayPub[i].idClient);
+				fflush(stdin);
+				if(flag==0)
+				{
+					maximo=cantidad;
+					idMaximo=i;
+					flag=1;
+				}
+				if(cantidad > maximo)
+				{
+					maximo=cantidad;
+					idMaximo=i;
+				}
+			}
+		}
+	}
+	if(maximo>0)
+	{
+		printf("Cliente con mas avisos activos:");
+		info_printOneCustByPubliID(arrayPub, lenPubli, arrayCust, lenCust,idMaximo );
+	}
+	else
+	{
+		printf("No hay clientes con publicaciones registradas");
+	}
 
+}
+
+void info_pausedPub(Publication* arrayPub, int lenPubli, Customer* arrayCust, int lenCust)
+{
+	int maximo;
+	int cantidad;
+	int idMaximo;
+	int flag;
+
+	if(arrayPub != NULL && lenPubli>0 && arrayCust != NULL && lenCust>0)
+	{
+		for (int i=0 ; i<lenCust ; i++)
+		{
+			if(arrayPub[i].isEmpty == 0 && arrayPub[i].isPaused == 1)
+			{
+				cantidad=pub_contadorAvisosPausados(arrayPub, lenPubli, arrayPub[i].idClient);
+				fflush(stdin);
+				if(flag==0)
+				{
+					maximo=cantidad;
+					idMaximo=i;
+					flag=1;
+				}
+				if(cantidad > maximo)
+				{
+					maximo=cantidad;
+					idMaximo=i;
+				}
+			}
+		}
+	}
+	if(maximo>0)
+	{
+		printf("Cliente con mas avisos activos:");
+		info_printOneCustByPubliID(arrayPub, lenPubli, arrayCust, lenCust,idMaximo );
+	}
+	else
+	{
+		printf("No hay clientes con publicaciones registradas");
+	}
+
+}
