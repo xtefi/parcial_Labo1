@@ -34,5 +34,7 @@ int pub_printInactive(Publication* array, int len);
 int pub_printByCustId(Publication* array, int len, int idCust);
 int pub_eraseByCustId(Publication* array, int len, int idCust);
 int pub_sortArray(Publication* arrayPub, int len);
+int pub_contador(Publication* array, int len, int idCustomer);
+int pub_contadorRubro(Publication* array, int len, int rubro);
 
 #endif /* AVISOS_H_ */

@@ -28,7 +28,6 @@ int main(void) {
 	int menu;
 	char answer[2];
 	int subMenu;
-	int flag=0;
 	Customer arrayCust[QTY_CUSTOMER];
 	int auxIdCustomer;
 	int auxIndexCustomer;
@@ -43,15 +42,17 @@ int main(void) {
 	}
 
 	cli_hardcode(arrayCust,QTY_CUSTOMER, 0,&auxIdCustomer,"Monrgomery","Scott", "27331339514");
-	cli_hardcode(arrayCust,QTY_CUSTOMER, 2,&auxIdCustomer,"Leonard","McCoy", "27331339515");
-	cli_hardcode(arrayCust,QTY_CUSTOMER, 3,&auxIdCustomer,"Hikaru","Sulu", "27331339516");
-	cli_hardcode(arrayCust,QTY_CUSTOMER, 4,&auxIdCustomer,"James Tiberuis","Kirk", "27331339517" );
-	cli_hardcode(arrayCust,QTY_CUSTOMER, 5,&auxIdCustomer,"Mr","Spock", "27331339518");
+	cli_hardcode(arrayCust,QTY_CUSTOMER, 1,&auxIdCustomer,"Leonard","McCoy", "27331339515");
+	cli_hardcode(arrayCust,QTY_CUSTOMER, 2,&auxIdCustomer,"Hikaru","Sulu", "27331339516");
+	cli_hardcode(arrayCust,QTY_CUSTOMER, 3,&auxIdCustomer,"James Tiberuis","Kirk", "27331339517" );
+	cli_hardcode(arrayCust,QTY_CUSTOMER, 4,&auxIdCustomer,"Mr","Spock", "27331339518");
 
-	pub_hardcode(arrayPub,QTY_PUBLICATION, 0, &auxIdPubli, 3, 1, "To boldly go");
+	pub_hardcode(arrayPub,QTY_PUBLICATION, 0, &auxIdPubli, 0, 1, "To boldly go");
 	pub_hardcode(arrayPub,QTY_PUBLICATION, 1, &auxIdPubli, 2, 7, "where no man");
 	pub_hardcode(arrayPub,QTY_PUBLICATION, 2, &auxIdPubli, 2, 12, "has gone before");
-	pub_hardcode(arrayPub,QTY_PUBLICATION, 3, &auxIdPubli, 2, 11, "Starship Enterprise");
+	pub_hardcode(arrayPub,QTY_PUBLICATION, 3, &auxIdPubli, 1, 11, "Starship Enterprise");
+	pub_hardcode(arrayPub,QTY_PUBLICATION, 4, &auxIdPubli, 1, 11, "Space");
+	pub_hardcode(arrayPub,QTY_PUBLICATION, 5, &auxIdPubli, 1, 11, "The last frontier");
 
 	do
 	{
@@ -69,43 +70,35 @@ int main(void) {
 			switch(menu)
 			{
 				case 1:
-/*done	    1) Alta de cliente: Se da de alta un cliente con nombre, apellido, y cuit.
+/*	    1) Alta de cliente: Se da de alta un cliente con nombre, apellido, y cuit.
 		       Se generará un ID único para este cliente que se imprimirá por pantalla */
 					auxIndexCustomer=cli_findEmptySlot(arrayCust,QTY_CUSTOMER);
 					if(cli_addNew(arrayCust, QTY_CUSTOMER, &auxIdCustomer, auxIndexCustomer)==0)
 					{
 						printf("\nCliente cargado exitosamente\n");
-						flag=0;
+
 					}
 					break;
 
 				case 2:
-/* done		 2) Modificar datos de cliente: Se ingresa el ID de cliente y se permitirá
+/* 		 2) Modificar datos de cliente: Se ingresa el ID de cliente y se permitirá
 		        cambiar el nombre, el apellido y el cuit. */
-					if(flag == 0)
+					cli_printArray(arrayCust, QTY_CUSTOMER);
+					if(!utn_getNumero(&auxIdCustomer, "\nIngrese ID del cliente a modificar: ", "\nError, solo numeros: ", 0, QTY_CUSTOMER,1))
 					{
-						cli_printArray(arrayCust, QTY_CUSTOMER);
-						if(!utn_getNumero(&auxIdCustomer, "\nIngrese ID del cliente a modificar: ", "\nError, solo numeros: ", 0, QTY_CUSTOMER,1))
-						{
-							if(cli_update(arrayCust, QTY_CUSTOMER, auxIdCustomer)==0)
-								{
-									printf("Cliente actualizado correctamente.\n");
-								}
-							else if(cli_update(arrayCust, QTY_CUSTOMER, auxIdCustomer)!=0)
-								{
-									printf("\nError, ID invalido\n");
-								}
-						}
-
-					}
-					else
-					{
-						printf("\nError, no hay clientes cargados. Intente con la opcion 1 del menu");
+						if(cli_update(arrayCust, QTY_CUSTOMER, auxIdCustomer)==0)
+							{
+								printf("Cliente actualizado correctamente.\n");
+							}
+						else if(cli_update(arrayCust, QTY_CUSTOMER, auxIdCustomer)!=0)
+							{
+								printf("\nError, ID invalido\n");
+							}
 					}
 					break;
 
 				case 3:
-/* Done		3) Baja de cliente: Se ingresa el ID del cliente y se listarán todas
+/* 		3) Baja de cliente: Se ingresa el ID del cliente y se listarán todas
 		       las publicaciones de dicho cliente. Luego se preguntará si se quiere
 			   confirmar la eliminación, la cual implicará la eliminación de todas
 			   las publicaciones y del cliente. */
@@ -132,12 +125,10 @@ int main(void) {
 					break;
 
 				case 4:
-/* Done		 4) Publicar: Permitirá crear un nuevo aviso. Se pedirán los siguientes
+/* 		 4) Publicar: Permitirá crear un nuevo aviso. Se pedirán los siguientes
 				datos: ID de cliente, número de rubro, texto del aviso (64 caracteres).
 				Se generará automáticamente un identificador numérico para el aviso y
 				se imprimirá en pantalla.*/
-					if(flag == 0)
-					{
 						cli_printArray(arrayCust, QTY_CUSTOMER);
 						auxIndexPubli=pub_findEmptySlot(arrayPub, QTY_PUBLICATION);
 						if(auxIndexPubli >=0 &&
@@ -150,16 +141,17 @@ int main(void) {
 						{
 							printf("Error, no existe cliente con ese ID");
 						}
-					}
+
 					break;
 
 
 				case 5:
-/* done		 5) Pausar publicación: Se pedirá el ID de la publicación y se imprimirá
+/* 		 5) Pausar publicación: Se pedirá el ID de la publicación y se imprimirá
 			    la información del cliente al que pertenece, luego se pedirá
 				confirmación para cambiarse de estado y se cambiará al estado "pausada".*/
 					pub_printActive(arrayPub, QTY_PUBLICATION);
-					if(!utn_getNumero(&auxIdPubli, "\nIngrese ID de la publicacion a pausar: ", "Error, reintente: ", 0, 999, 1))
+					if(!utn_getNumero(&auxIdPubli, "\nIngrese ID de la publicacion a pausar: ", "Error, reintente: ", 0, 999, 1) &&
+						pub_findById(arrayPub, QTY_PUBLICATION, auxIdPubli) != -1)
 					{
 						info_printOneCustByPubliID(arrayPub, QTY_PUBLICATION, arrayCust, QTY_CUSTOMER, auxIdPubli);
 						utn_getNombre(answer, 2,"\nElija S para eliminar, N para salir: ", "Error, respuesta debe ser S o N", 1);
@@ -172,13 +164,13 @@ int main(void) {
 					break;
 
 				case 6:
-/*Done		  6) Reanudar publicación: Se pedirá el ID de la publicación y se imprimirá
+/*		  6) Reanudar publicación: Se pedirá el ID de la publicación y se imprimirá
 				 la información del cliente al que pertenece, luego se pedirá confirmación
 				 para cambiarse de estado y se cambiará al estado "activa".*/
 
 					if(pub_printInactive(arrayPub, QTY_PUBLICATION) == 0 &&
 					   !utn_getNumero(&auxIdPubli, "\nIngrese ID de la publicacion a reanudar: ", "Error, reintente: ", 0, 999, 1) &&
-					   pub_findById(arrayPub, QTY_PUBLICATION, auxIdPubli) >= 0)
+					   pub_findById(arrayPub, QTY_PUBLICATION, auxIdPubli) != -1)
 					{
 						info_printOneCustByPubliID(arrayPub, QTY_PUBLICATION, arrayCust, QTY_CUSTOMER, auxIdPubli);
 						utn_getNombre(answer, 2,"\nElija S para eliminar, N para salir: ", "Error, respuesta debe ser S o N", 1);
@@ -196,15 +188,16 @@ int main(void) {
 					break;
 
 				case 7:
-/*Done		  7) Imprimir Clientes: Se imprimirá una lista de clientes con todos sus
+/*  		  7) Imprimir Clientes: Se imprimirá una lista de clientes con todos sus
 			  	 datos junto con la cantidad de avisos activos que posee. */
 					info_printCustAndPubs(arrayPub, QTY_PUBLICATION,arrayCust, QTY_CUSTOMER);
 					break;
 
-				case 8: /*8) Informar: Un submenú con las siguientes opciones:
-						   a) Cliente con más avisos.
-			b listo		   b) Cantidad de avisos pausados.
-						   c) Rubro con mas avisos. */
+				case 8:
+/*           8) Informar: Un submenú con las siguientes opciones:
+a done			   a) Cliente con más avisos.
+b Done		   b) Cantidad de avisos pausados.
+			   c) Rubro con mas avisos. */
 					do{
 						if(!utn_getNumero(&subMenu, "\nIngrese opcion: "
 													"\n1) Cliente con mas avisos"
@@ -215,12 +208,13 @@ int main(void) {
 							switch(subMenu)
 							{
 								case 1:
-									info_clientWithHighestPubli(arrayPub, QTY_PUBLICATION,  arrayCust, QTY_CUSTOMER);
+									info_mostPublish(arrayPub, QTY_PUBLICATION,  arrayCust, QTY_CUSTOMER);
 									break;
 								case 2:
 									info_paused(arrayPub, QTY_PUBLICATION);
 									break;
 								case 3:
+									info_maxRubro(arrayPub, QTY_PUBLICATION,  arrayCust, QTY_CUSTOMER);
 									break;
 							}//switch subMenu
 						}//if

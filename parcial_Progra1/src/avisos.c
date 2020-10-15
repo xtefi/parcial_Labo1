@@ -99,7 +99,7 @@ int pub_addNew(Publication* array, int len, int index, int* id, int idCust)
 			buffer.isPaused=0;
 			array[index]=buffer;
 			(*id)++;
-			printf("ID   |ID clte |RUBRO |TEXTO\n");
+			printf("ID   |ID publicidad   |RUBRO           |TEXTO\n");
 			pub_printOne(&array[index]);
 		}
 	}
@@ -402,4 +402,40 @@ int pub_sortArray(Publication* arrayPub, int len)
 		}while(flagSwap);
 	}
 	return retorno;
+}
+
+
+int pub_contador(Publication* array, int len, int idCustomer)
+{
+	int counter=0;
+
+	if(array != NULL && len >0 && idCustomer >=0)
+	{
+		for(int i=0 ; i<len ; i++)
+		{
+			if(array[i].isEmpty == 0 && array[i].idClient == idCustomer)
+			{
+				counter++;
+			}
+		}
+	}
+	return counter;
+}
+
+
+int pub_contadorRubro(Publication* array, int len, int rubro)
+{
+	int counter=0;
+
+	if(array != NULL && len >0 && rubro >=0)
+	{
+		for(int i=0 ; i<len ; i++)
+		{
+			if(array[i].isEmpty == 0 && array[i].rubro == rubro)
+			{
+				counter++;
+			}
+		}
+	}
+	return counter;
 }

@@ -41,11 +41,20 @@ int info_paused(Publication* arrayPub, int pubLen)
 		}
 		retorno=0;
 	}
-	printf("Hay %i avisos en pausa", counter);
+	printf("\nHay %i avisos en pausa", counter);
 	return retorno;
 }
 
-
+/** \brief print one customer accord to publication ID
+*
+* \param arrayPub Publication*
+* \param lenPubli int
+* \param arrayCust Customer*
+* \param lenCust int
+* \return int Return (-1) if Error [Invalid length or NULL pointer or if can't
+find a Customer] - (0) if Ok
+*
+*/
 int info_printOneCustByPubliID(Publication* arrayPub, int lenPubli, Customer* arrayCust, int lenCust, int idPubli)
 {
 	int retorno=-1;
@@ -114,6 +123,7 @@ int info_printCustAndPubs(Publication* arrayPub, int lenPubli, Customer* arrayCu
 	return retorno;
 }
 
+
 /** \brief in process
 *
 * \param
@@ -124,27 +134,87 @@ int info_printCustAndPubs(Publication* arrayPub, int lenPubli, Customer* arrayCu
 find a Customer] - (0) if Ok
 *
 */
-int info_clientWithHighestPubli(Publication* arrayPub, int lenPubli, Customer* arrayCust, int lenCust)
+
+void info_mostPublish(Publication* arrayPub, int lenPubli, Customer* arrayCust, int lenCust)
 {
-	int retorno=-1;
-	int contador=0;
+	int maximo;
+	int cantidad;
+	int idMaximo;
+	int flag;
 
-	for(int i=0 ; i<lenCust ; i++)
+	if(arrayPub != NULL && lenPubli>0 && arrayCust != NULL && lenCust>0)
 	{
-		if(arrayCust[i].isEmpty == 0)
+		for (int i=0 ; i<lenCust ; i++)
 		{
-			for(int j=0 ; j< lenPubli ; j++)
+			if(arrayPub[i].isEmpty == 0)
 			{
-				if(arrayPub[j].idClient == arrayCust[i].id && arrayPub[j].isEmpty == 0)
+				cantidad=pub_contador(arrayPub, lenPubli, arrayPub[i].idClient);
+				fflush(stdin);
+				if(flag==0)
 				{
-					contador++;
-
+					maximo=cantidad;
+					idMaximo=i;
+					flag=1;
 				}
-			}//for j
-		}//primer if
-	}//for i
+				if(cantidad > maximo)
+				{
+					maximo=cantidad;
+					idMaximo=i;
+				}
+			}
+		}
+	}
+	if(maximo>0)
+	{
+		printf("Cliente con mas publicaciones:");
+		info_printOneCustByPubliID(arrayPub, lenPubli, arrayCust, lenCust,idMaximo );
+	}
+	else
+	{
+		printf("No hay clientes con publicaciones registradas");
+	}
 
-	return retorno;
+}
+
+
+void info_maxRubro(Publication* arrayPub, int lenPubli, Customer* arrayCust, int lenCust)
+{
+	int maximo;
+	int cantidad;
+	int rubroMaximo;
+	int flag;
+
+	if(arrayPub != NULL && lenPubli>0 && arrayCust != NULL && lenCust>0)
+	{
+		for (int i=0 ; i<lenCust ; i++)
+		{
+			if(arrayPub[i].isEmpty == 0)
+			{
+				cantidad=pub_contadorRubro(arrayPub, lenPubli, arrayPub[i].rubro);
+				fflush(stdin);
+				if(flag==0)
+				{
+					maximo=cantidad;
+					rubroMaximo=arrayPub[i].rubro;
+					flag=1;
+				}
+				if(cantidad > maximo)
+				{
+					maximo=cantidad;
+					rubroMaximo=arrayPub[i].rubro;
+				}
+			}
+		}
+	}
+	if(maximo>0)
+	{
+		printf("Rubro con mas publicaciones: %i", rubroMaximo);
+	}
+	else
+	{
+		printf("No hay clientes con publicaciones registradas");
+	}
+
 }
 
 
