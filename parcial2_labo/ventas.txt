@@ -1,0 +1,2 @@
+2, 0, 25, catalogoHuesitos, CABA, 1
+2, 1, 50, catalogoComida, CABA, 1
