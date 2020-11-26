@@ -18,3 +18,5 @@ void controller_cobrarVentas(LinkedList* pArrayListAfiches, LinkedList* pArrayLi
 int controller_filtraListaAfichesConClientes(LinkedList* pArrayListAfiches, LinkedList* pArrayListClientes);
 int controller_filtraCobradas(char* path,LinkedList* pArrayListAfiches, LinkedList* pArrayListClientes);
 int controller_filtraSinCobrar(char* path,LinkedList* pArrayListAfiches, LinkedList* pArrayListClientes);
+int controller_mayorVentas(LinkedList* pArrayListAfiches, LinkedList* pArrayListClientes);
+

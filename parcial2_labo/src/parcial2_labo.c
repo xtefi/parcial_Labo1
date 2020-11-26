@@ -69,11 +69,7 @@ int main(void) {
 					break;
 
 				case 7:
-
-					auxMayor=ll_reduceInt(listaAfiches, afi_mayorCantidadVenta);
-
-
-						printf("Mayor cantidad de ventas es %d\n",auxMayor);
+					controller_mayorVentas(listaAfiches, listaClientes);
 					break;
 
 				case 8:
@@ -81,7 +77,6 @@ int main(void) {
 					controller_printAfiche(listaAfiches);
 					break;
 			}
-
 		}
 	}while(menu !=9);
 

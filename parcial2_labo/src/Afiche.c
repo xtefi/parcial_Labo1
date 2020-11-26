@@ -486,25 +486,24 @@ int afi_obtieneCobradas(void* elemento)
 	return retorno;
 }
 
-int afi_mayorCantidadVenta(void* auxElemento)
+int afi_mayorCantidadVenta(void* pElemento)
 {
-	Afiche* auxAfiche = (Afiche*)auxElemento;
-	int auxVentas;
-	int ventasMax;
+	Afiche* auxAfiche = (Afiche*)pElemento;
+	int auxCantidad;
+	int valorMax;
 	int flag=0;
-
 	if(auxAfiche != NULL)
 	{
-		afi_getCantidad(auxAfiche,&auxVentas);
+		afi_getCantidad(auxAfiche,&auxCantidad);
 		if(flag==0)
 		{
-			ventasMax = auxVentas;
+			valorMax = auxCantidad;
 			flag=1;
 		}
-		if (auxVentas > ventasMax)
+		if (valorMax < auxCantidad)
 		{
-			ventasMax = auxVentas;
+			valorMax = auxCantidad;
 		}
 	}
-	return ventasMax;
+	return valorMax;
 }

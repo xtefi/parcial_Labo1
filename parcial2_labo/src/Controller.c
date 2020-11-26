@@ -686,10 +686,7 @@ int controller_filtraSinCobrar(char* path, LinkedList* pArrayListAfiches, Linked
 				if(auxIdCli == auxIdAfi)
 				{
 					a++;//=ll_reduceInt(listaFiltrada, afi_obtenerACobrar);
-
-
 				}
-
 			}
 			if(a>0)
 			{
@@ -705,3 +702,64 @@ int controller_filtraSinCobrar(char* path, LinkedList* pArrayListAfiches, Linked
 	}
 	return retorno;
 }
+
+int controller_mayorVentas(LinkedList* pArrayListAfiches, LinkedList* pArrayListClientes)
+{
+	Afiche* auxAfiche;
+	Cliente* auxCliente;
+	int retorno = -1;
+	int auxIdCli;
+	int auxIdAfi;
+	int auxCantidad;
+	char nombre[125];
+	char apellido[125];
+	char cuit[125];
+	int idAfi;
+	char nombre2[125];
+	char apellido2[125];
+	int mayor;
+	int menor;
+
+	if(pArrayListAfiches != NULL && pArrayListClientes != NULL)
+	{
+		for(int i=0; i<ll_len(pArrayListClientes); i++)
+		{
+			auxCliente=ll_get(pArrayListClientes, i);
+			cli_getId(auxCliente, &auxIdCli);
+
+			for(int j=0; j<ll_len(pArrayListAfiches); j++)
+			{
+				auxAfiche=ll_get(pArrayListAfiches, j);
+				afi_getIdCliente(auxAfiche,&auxIdAfi);
+				afi_getCantidad(auxAfiche,&auxCantidad);
+
+				if(auxIdCli == auxIdAfi)
+				{
+					if(j==0)
+					{
+						mayor=auxCantidad;
+						menor=auxCantidad;
+					}
+					if(auxCantidad>mayor)
+					{
+						mayor=auxCantidad;
+						cli_getNombre(auxCliente, nombre);
+						cli_getApellido(auxCliente, apellido);
+						cli_getCuit(auxCliente, cuit);
+						afi_getId(auxAfiche, &idAfi);
+					}
+					else if(menor>auxCantidad)
+					{
+						menor=auxCantidad;
+						cli_getNombre(auxCliente, nombre2);
+						cli_getApellido(auxCliente, apellido2);
+					}
+				}
+			}
+		}
+		printf("Cliente con mayor cantidad de ventas: %s %s Cuit del cliente: %s ID de la venta: %i\n", nombre, apellido, cuit, idAfi);
+		printf("Cliente con menor cantidad de ventas: %s %s\n", nombre2, apellido2);
+	}
+		return retorno;
+}
+

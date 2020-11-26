@@ -502,8 +502,8 @@ int ll_map(LinkedList* this, int (*pFunc)(void*))
 	{
 		for(int i=0; i<=ll_len(this); i++)
 		{
-			pFunc(ll_get(this,i));
-			returnAux=0;
+
+			returnAux=pFunc(ll_get(this,i));
 		}
 	}
 	return returnAux;
