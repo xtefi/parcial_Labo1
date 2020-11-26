@@ -58,7 +58,7 @@ Afiche* afiche_newParametros(char* idCliStr,char* idAfiStr,char* cantidadStr, ch
 	Afiche* this = NULL;
 	this = afiche_new();
 
-	if(this!= NULL && idCliStr != NULL && idAfiStr != NULL && cantidadStr != NULL && nombreArchivoStr != NULL && zonaStr != NULL && aCobrarStr!=NULL)
+	if(this!= NULL && idCliStr != NULL && idAfiStr != NULL && cantidadStr != NULL && nombreArchivoStr != NULL && zonaStr != NULL && aCobrarStr != NULL)
 	{
 		afi_setIdClienteTxt(this,idCliStr);
 		afi_setIdTxt(this, idAfiStr) ;
@@ -67,7 +67,7 @@ Afiche* afiche_newParametros(char* idCliStr,char* idAfiStr,char* cantidadStr, ch
 		afi_setCantidadTxt(this,cantidadStr);
 		afi_setACobrarTxt(this,aCobrarStr);
 	}
-	if(this != NULL) printf("Anda mal afi nuevo param");
+	else printf("\nAnda mal afiche nuevo param");
 	return this;
 }
 
@@ -440,5 +440,71 @@ int afi_getACobrarTxt(Afiche* this,char* ACobrar)
 	return retorno;
 }
 
+//-----------------------CALCULOS------------------------------------
+//---------------------------------------------------------------------
+
+int afi_obtenerACobrar(void* elemento)
+{
+	int retorno = -1;
+	Afiche* auxiliarElemento = (Afiche*)elemento;
+	int auxCobrar;
+
+	if(elemento != NULL)
+	{
+		afi_getACobrar(auxiliarElemento,&auxCobrar);
+		if(auxCobrar == 1)
+		{
+			retorno = 1;
+		}
+		else if(auxCobrar == 0)
+		{
+			retorno = 0;
+		}
+	}
+	return retorno;
+}
 
 
+int afi_obtieneCobradas(void* elemento)
+{
+	int retorno = -1;
+	Afiche* auxiliarElemento = (Afiche*)elemento;
+	int auxCobrar;
+
+	if(elemento != NULL)
+	{
+		afi_getACobrar(auxiliarElemento,&auxCobrar);
+		if(auxCobrar == 1)
+		{
+			retorno = 0;
+		}
+		else if(auxCobrar == 0)
+		{
+			retorno = 1;
+		}
+	}
+	return retorno;
+}
+
+int afi_mayorCantidadVenta(void* auxElemento)
+{
+	Afiche* auxAfiche = (Afiche*)auxElemento;
+	int auxVentas;
+	int ventasMax;
+	int flag=0;
+
+	if(auxAfiche != NULL)
+	{
+		afi_getCantidad(auxAfiche,&auxVentas);
+		if(flag==0)
+		{
+			ventasMax = auxVentas;
+			flag=1;
+		}
+		if (auxVentas > ventasMax)
+		{
+			ventasMax = auxVentas;
+		}
+	}
+	return ventasMax;
+}

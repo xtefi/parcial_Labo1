@@ -13,7 +13,13 @@
 #define CUIT_LEN 12
 
 static int controller_validaCuit(LinkedList* pArrayListClientes, char* cuitVerificar);
-
+/** \brief recibe un cuit y verifica que no se haya ingresado
+ *
+ * \param pArrayListClientes LinkedList*
+ * \param char* cuitVerificar cuit a verificar
+ * \return 0 si (OK) / -1 si (ERROR)
+ *
+ */
 static int controller_validaCuit(LinkedList* pArrayListClientes, char* cuitVerificar)
 {
 	int retorno=-1;
@@ -71,33 +77,11 @@ int controller_loadFromText(char* path , LinkedList* pArrayListClientes)
 		retorno =0;
 		printf("\nLista de empleados cargada con exito");
 	}
-	else printf("No corre loadFromText");
+	//else printf("No corre loadFromText"); // control
 	fclose(pFile);
 	return retorno;
 }
 
-/** \brief Carga los datos de los clientes desde el archivo data.csv (modo binario).
- *
- * \param path char*
- * \param pArrayListClientes LinkedList*
- * \return int
- *
-
-int controller_loadFromBinary(char* path , LinkedList* pArrayListClientes)
-{
-	int retorno=-1;
-	FILE* pFile= fopen(path, "r+");
-	if(!parser_ClienteFromBinary(pFile,pArrayListClientes))
-	{
-		retorno = 0;
-		printf("\nLista en binario cargada con exito.\n");
-
-	}
-	else printf("\nNo se pudo cargar la lista en binario.\n");
-	fclose(pFile);
-    return retorno;
-}
-*/
 /** \brief Alta de cliente
  *
  * \param path char*
@@ -145,60 +129,7 @@ int controller_addCliente(LinkedList* pArrayListClientes)
 	return retorno;
 }
 
-/** \brief Modificar datos de empleado
- *
- * \param path char*
- * \param pArrayListClientes LinkedList*
- * \return 0 si (OK) / -1 si (ERROR)
- *
- */
-int controller_editCliente(LinkedList* pArrayListClientes)
-{
-	int retorno=-1;
-	int limite=ll_len(pArrayListClientes);
-	int auxId;
-	int opciones;
-	Cliente* auxCliente;
 
-	if(pArrayListClientes!=NULL && limite>0 &&
-		!utn_getNumero(&auxId,"\nIngrese el ID del Cliente a modificar: ", "\nError, reintente: ", 0,limite,2))
-	{
-		auxCliente = ll_get(pArrayListClientes, auxId-1);
-		if(!cli_getId(auxCliente, &auxId))
-		{
-			retorno=0;
-			do
-			{
-				utn_getNumero(&opciones,"\nElija opcion a modificar"
-										"\n1. Nombre"
-										"\n2. Apellido"
-										"\n3. CUIT"
-										"\n4. Volver al menu anterior\n", "\nError, reintente:", 1, 4, 2);
-				switch(opciones)
-				{
-					case 1:
-						utn_getDescripcion(auxCliente->nombre, NOMBRE_LEN, "\nIngrese nombre del empleado: ", "Error, reintente: \n", 1);
-					break;
-					case 2:
-						utn_getDescripcion(auxCliente->apellido, NOMBRE_LEN, "\nIngrese apellido del empleado: ", "Error, reintente: \n", 1);
-					break;
-					case 3:
-						utn_getDescripcion(auxCliente->cuit, NOMBRE_LEN, "\nIngrese CUIT del empleado: ", "Error, reintente: \n", 1);
-					break;
-				}//switch
-			}while(opciones!=4);
-		}
-		else
-		{
-			printf("Error, ID no encontrado");
-		}
-	}//PRIMER IF
-	else
-	{
-		printf("Error, no hay clientes cargados");
-	}
-    return retorno;
-}
 
 /** \brief Baja de cliente
  *
@@ -272,7 +203,7 @@ int controller_ListCliente(LinkedList* pArrayListClientes)
     }
     else
     {
-    	printf("Error, no hay clientes cargados");
+    	printf("\nError, no hay clientes cargados");
     }
     return 0;
 }
@@ -310,7 +241,7 @@ int controller_saveAsText(char* path , LinkedList* pArrayListClientes)
 	int retorno=-1;
 	FILE* nuevoArchivo;
 	int i;
-	Cliente* auxiliarEmployee;
+	Cliente* auxCliente;
 	char nombre[NOMBRE_LEN];
 	char apellido[NOMBRE_LEN];
 	char cuit[CUIT_LEN];
@@ -321,11 +252,11 @@ int controller_saveAsText(char* path , LinkedList* pArrayListClientes)
 		nuevoArchivo = fopen(path,"w+");
 		for(i=0; i<ll_len(pArrayListClientes); i++)
 		{
-			auxiliarEmployee=(Cliente*)ll_get(pArrayListClientes,i);
-			cli_getId(auxiliarEmployee,&id);
-			cli_getNombre(auxiliarEmployee,nombre);
-			cli_getApellido(auxiliarEmployee,apellido);
-			cli_getCuit(auxiliarEmployee,cuit);
+			auxCliente=(Cliente*)ll_get(pArrayListClientes,i);
+			cli_getId(auxCliente,&id);
+			cli_getNombre(auxCliente,nombre);
+			cli_getApellido(auxCliente,apellido);
+			cli_getCuit(auxCliente,cuit);
 			fprintf(nuevoArchivo,"%d,%s,%s,%s\n",id,nombre,apellido,cuit);
 			retorno =0;
 		}
@@ -334,34 +265,13 @@ int controller_saveAsText(char* path , LinkedList* pArrayListClientes)
     return retorno;
 }
 
-
-/** \brief Guarda los datos de los empleados en el archivo data.csv (modo binario).
+/** \brief se obtene un ID por parametro y devuelve la posicion en la que se encuentra
  *
  * \param path char*
  * \param pArrayListClientes LinkedList*
  * \return 0 si (OK) / -1 si (ERROR)
  *
-
-int controller_saveAsBinary(char* path , LinkedList* pArrayListClientes)
-{
-	Cliente* auxCliente;
-	FILE* pFile;
-	int retorno =-1;
-	if(path != NULL && pArrayListClientes != NULL)
-	{
-		pFile=fopen(path,"w+");
-		for(int i=0; i<ll_len(pArrayListClientes); i++)
-		{
-			auxCliente=(Cliente*)ll_get(pArrayListClientes, i);
-			fwrite(auxCliente, sizeof(Cliente), 1, pFile);
-		}
-		retorno=0;
-	}
-	fclose(pFile);
-    return retorno;
-}
  */
-
 int controller_retornaIdCliente(LinkedList* pArrayListClientes)
 {
 	int retorno=-1;
@@ -494,7 +404,7 @@ int controller_loadAficheFromText(char* path , LinkedList* pArrayListAfiches)
 		retorno =0;
 		printf("\nLista de afiches cargada con exito");
 	}
-	else printf("No corre loadFromText");
+	else printf("\nNo corre loadFromTextAfiche");
 	fclose(pFile);
 	return retorno;
 }
@@ -506,7 +416,7 @@ int controller_loadAficheFromText(char* path , LinkedList* pArrayListAfiches)
  * \return 0
  *
  */
-int controller_ListAfiche(LinkedList* pArrayListAfiches)
+int controller_printAfiche(LinkedList* pArrayListAfiches)
 {
     int i;
     int limite=ll_len(pArrayListAfiches);
@@ -514,19 +424,284 @@ int controller_ListAfiche(LinkedList* pArrayListAfiches)
     auxAfiche = afiche_new();
     if(pArrayListAfiches!=NULL && limite>0)
     {
-		printf("\n\nID cli|ID afi|Cantidad  |Nombre archivo     |Zona           |A cobrar");
+		printf("\n\nID cli|ID afi|Cantidad  |Nombre archivo          |Zona               |1 A cobrar - 0 cobrada");
 		for(i= 0; i < limite; i++)
 		{
 			auxAfiche=ll_get(pArrayListAfiches, i);
 			if(auxAfiche->idAfiche > 0)
 			{
-				printf("\n%-4d  |%-4d  |%-6d    |%-15s    |%-15s|%-2i", auxAfiche->idCliente, auxAfiche->idAfiche,auxAfiche->cantidad ,auxAfiche->nombreArchivo, auxAfiche->zona, auxAfiche->aCobrar);
+				printf("\n%-4d  |%-4d  |%-6d    |%-15s         |%-20s|%-2i", auxAfiche->idCliente, auxAfiche->idAfiche,auxAfiche->cantidad ,auxAfiche->nombreArchivo, auxAfiche->zona, auxAfiche->aCobrar);
 			}
 		}
     }
     else
     {
-    	printf("Error, no hay clientes cargados");
+    	printf("\nError, no hay clientes cargados");
     }
     return 0;
+}
+/** \brief Modificar datos de empleado
+ *
+ * \param path char*
+ * \param pArrayListClientes LinkedList*
+ * \return 0 si (OK) / -1 si (ERROR)
+ *
+ */
+int controller_editAfiche(LinkedList* pArrayListAfiches)
+{
+	int retorno=-1;
+	int auxId;
+	int opciones;
+	char auxNombreArchivo[125];
+	char auxZona[125];
+	int auxCantidad;
+	Afiche* auxAfiche;
+
+	if(pArrayListAfiches!= NULL)
+	{
+		controller_printAfiche(pArrayListAfiches);
+		auxId=controller_retornaIdAfiche(pArrayListAfiches);
+		if(auxId != -1)
+		{
+			auxAfiche = ll_get(pArrayListAfiches, auxId);
+			retorno=0;
+			do
+			{
+				utn_getNumero(&opciones,"\nElija opcion a modificar"
+										"\n1. Nombre"
+										"\n2. Cantidad"
+										"\n3. Zona"
+										"\n4. Volver al menu anterior\n", "\nError, reintente:", 1, 4, 2);
+				switch(opciones)
+				{
+					case 1:
+						utn_getDescripcion(auxNombreArchivo, NOMBRE_LEN, "\nIngrese nombre del archivo: ", "\nError, reintente: ", 1);
+						afi_setNombreArchivo(auxAfiche, auxNombreArchivo);
+					break;
+
+					case 2:
+						utn_getNumero(&auxCantidad, "\nIngrese nueva cantidad: ", "\nError, reintente: ", 1, 5000,1);
+						afi_setCantidad(auxAfiche, auxCantidad);
+					break;
+
+					case 3:
+						utn_getDescripcion(auxZona, NOMBRE_LEN, "\nIngrese nueva zona: ", "\nError, reintente: ", 1);
+						afi_setZona(auxAfiche, auxZona);
+					break;
+				}//switch
+			}while(opciones!=4);
+		}
+		else
+		{
+			printf("Error, ID no encontrado");
+		}
+	}//PRIMER IF
+	else
+	{
+		printf("Error, no hay clientes cargados");
+	}
+    return retorno;
+}
+
+
+int controller_retornaIdAfiche(LinkedList* pArrayListAfiches)
+{
+	int retorno=-1;
+	int idAux;
+	int idBuscar;
+	Afiche* auxAfiche;
+
+	if(pArrayListAfiches != NULL &&
+		!utn_getNumero(&idBuscar, "\nIngrese ID del afiche", "\nError en el ingreso, reintente: ", 1, ll_len(pArrayListAfiches), 2))
+	{
+		for(int i=0; i<ll_len(pArrayListAfiches); i++)
+		{
+			auxAfiche = ll_get(pArrayListAfiches,i);
+			afi_getId(auxAfiche, &idAux);
+
+			if( idAux == idBuscar)
+			{
+				retorno = i;
+				break;
+			}
+		}
+	}
+	return retorno;
+}
+
+/** \brief edita campo "aCobrar" del afiche
+ *
+ * \param pArrayListAfiches LinkedList*
+ * \param pArrayListClientes LinkedList*
+ * \return void
+ *
+ */
+void controller_cobrarVentas(LinkedList* pArrayListAfiches, LinkedList* pArrayListClientes)
+{
+	Afiche* auxAfiche;
+	int auxiliarId=controller_filtraListaAfichesConClientes(pArrayListAfiches,pArrayListClientes);
+
+	if(auxiliarId != -1)
+	{
+		auxAfiche=ll_get(pArrayListAfiches,auxiliarId );
+		int confirma;
+		if(auxAfiche != NULL &&
+		   !utn_getNumero(&confirma, "\nDesea cambiar la publicacion al estado cobrada? 1 para SI, 2 para NO", "\nERROR, 1 para SI, 2 para NO", 1, 2, 2))
+		{
+			if(confirma == 1)
+			{
+				afi_setACobrar(auxAfiche, 0);
+			}
+			else
+			{
+				printf("\nSe cancela la cobranza");
+			}
+		}
+	}
+}
+
+/** \brief filtra afiches en estado "a cobrar", pide ID de afiche e imprime cliente asociado
+ *
+ * \param pArrayListAfiches LinkedList*
+ * \param pArrayListClientes LinkedList*
+ * \return direccion de ID afiche si (OK) / -1 si (ERROR)
+ *
+ */
+int controller_filtraListaAfichesConClientes(LinkedList* pArrayListAfiches, LinkedList* pArrayListClientes)
+{
+	Afiche* auxAfiche;
+	Cliente* auxCliente;
+	int auxIdAfiche;
+	int auxIdCliente;
+	int verificadorID;
+	int retorno=-1;
+	LinkedList* listaFiltrada=ll_filter(pArrayListAfiches,afi_obtenerACobrar);
+	if(pArrayListClientes != NULL && listaFiltrada != NULL)
+	{
+		controller_printAfiche(listaFiltrada);
+		auxIdAfiche=controller_retornaIdAfiche(listaFiltrada);
+
+		if(auxIdAfiche != -1)
+		{
+			auxAfiche=ll_get(listaFiltrada,auxIdAfiche);
+			auxIdCliente=auxAfiche->idCliente;
+
+			for(int i=0; i<ll_len(pArrayListClientes); i++)
+			{
+				auxCliente=ll_get(pArrayListClientes, i);
+				cli_getId(auxCliente,&verificadorID);
+
+				if(auxIdCliente == verificadorID)
+				{
+					printf("\n La publicacion pertenece a %s %s Nro CUIT: %s", auxCliente->nombre, auxCliente->apellido, auxCliente->cuit);
+					retorno=auxIdAfiche;
+					break;
+				}
+			}
+		}
+		else
+		{
+			printf("Error, no se localizó el ID del afiche en cuentas a cobrar");
+		}
+	}
+	return retorno;
+}
+
+
+
+int controller_filtraCobradas(char* path, LinkedList* pArrayListAfiches, LinkedList* pArrayListClientes)
+{
+	Cliente* auxCliente;
+	Afiche* auxAfiche;
+	int auxIdAfi;
+	int auxIdCli;
+	int retorno= -1;
+	FILE* pFile;
+	char nombre[125];
+	char apellido[125];
+	char cuit[125];
+	int a=0;
+	LinkedList* listaFiltrada=ll_filter(pArrayListAfiches,afi_obtenerACobrar);
+
+	if(listaFiltrada != NULL && pArrayListClientes != NULL)
+	{
+		pFile=fopen(path,"w+");
+		for(int i=0; i<ll_len(pArrayListClientes); i++)
+		{
+			auxCliente=ll_get(pArrayListClientes, i);
+			cli_getId(auxCliente, &auxIdCli);
+			a=0;
+			for(int j=0; j<ll_len(listaFiltrada); j++)
+			{
+				auxAfiche=ll_get(listaFiltrada, j);
+				afi_getIdCliente(auxAfiche,&auxIdAfi);
+
+				if(auxIdCli == auxIdAfi)
+				{
+					a++;//=ll_reduceInt(listaFiltrada, afi_obtenerACobrar);
+				}
+			}
+			if(a>0)
+			{
+				printf("\nID CLI: %i   ID AFI: %i  %i",auxIdCli,auxIdAfi,a); // para control
+				cli_getId(auxCliente,&auxIdCli);
+				cli_getNombre(auxCliente,nombre);
+				cli_getApellido(auxCliente,apellido);
+				cli_getCuit(auxCliente,cuit);
+				fprintf(pFile,"%d,%s %s,Cuit: %s, Cuentas a cobrar: %i\n",auxIdCli,nombre,apellido,cuit, a);
+			}
+		}
+		fclose(pFile);
+	}
+	return retorno;
+}
+
+int controller_filtraSinCobrar(char* path, LinkedList* pArrayListAfiches, LinkedList* pArrayListClientes)
+{
+	Cliente* auxCliente;
+	Afiche* auxAfiche;
+	int auxIdAfi;
+	int auxIdCli;
+	int retorno= -1;
+	FILE* pFile;
+	char nombre[125];
+	char apellido[125];
+	char cuit[125];
+	int a=0;
+	LinkedList* listaFiltrada=ll_filter(pArrayListAfiches, afi_obtieneCobradas);
+
+	if(listaFiltrada != NULL && pArrayListClientes != NULL)
+	{
+		pFile=fopen(path,"w+");
+		for(int i=0; i<ll_len(pArrayListClientes); i++)
+		{
+			auxCliente=ll_get(pArrayListClientes, i);
+			cli_getId(auxCliente, &auxIdCli);
+			a=0;
+			for(int j=0; j<ll_len(listaFiltrada); j++)
+			{
+				auxAfiche=ll_get(listaFiltrada, j);
+				afi_getIdCliente(auxAfiche,&auxIdAfi);
+
+				if(auxIdCli == auxIdAfi)
+				{
+					a++;//=ll_reduceInt(listaFiltrada, afi_obtenerACobrar);
+
+
+				}
+
+			}
+			if(a>0)
+			{
+				printf("\nID CLI: %i   ID AFI: %i  %i",auxIdCli,auxIdAfi,a); // para control
+				cli_getId(auxCliente,&auxIdCli);
+				cli_getNombre(auxCliente,nombre);
+				cli_getApellido(auxCliente,apellido);
+				cli_getCuit(auxCliente,cuit);
+				fprintf(pFile,"%d,%s %s,Cuit: %s, Cuentas cobradas: %i\n",auxIdCli,nombre,apellido,cuit, a);
+			}
+		}
+		fclose(pFile);
+	}
+	return retorno;
 }

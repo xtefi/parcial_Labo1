@@ -1,0 +1,3 @@
+1,Narda Lepes,Cuit: 4534343, Cuentas a cobrar: 2
+2,Gato Dumas,Cuit: 5566, Cuentas a cobrar: 1
+3,Blanca Cota,Cuit: 65655, Cuentas a cobrar: 1

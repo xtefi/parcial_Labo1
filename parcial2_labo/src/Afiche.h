@@ -52,4 +52,7 @@ int afi_setACobrarTxt(Afiche* this,char* ACobrar);
 int afi_getACobrar(Afiche* this,int* ACobrar);
 int afi_getACobrarTxt(Afiche* this,char* ACobrar);
 
+int afi_obtenerACobrar(void* elemento);
+int afi_obtieneCobradas(void* elemento);
+int afi_mayorCantidadVenta(void* auxElemento);
 #endif /* AFICHE_H_ */

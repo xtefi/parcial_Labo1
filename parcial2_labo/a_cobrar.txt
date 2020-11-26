@@ -1,0 +1,2 @@
+0,nombre apellido,Cuit: cuit, Cuentas cobradas
+7,Lionel Hutz,Cuit: 656565, Cuentas cobradas: 1

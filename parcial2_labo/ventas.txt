@@ -1,2 +1,9 @@
-2, 0, 25, catalogoHuesitos, CABA, 1
-2, 1, 50, catalogoComida, CABA, 1
+idcli,idafi,cantidad,desc,zona,acobrar
+3,1,120,venta zapatos,CABA,1
+7,2,300,asesoria legal,CABA,0
+1,3,300,descuento IAG,CABA,1
+2,4,600,curso pasteleria,CABA,1
+1,5,100,venta comida,CABA,1
+5,6,320,subasta 1,ZONA OESTE,1
+5,7,800,subasta 2,ZONA SUR,1
+5,8,100,subasta 3,CABA,0

@@ -498,13 +498,11 @@ int ll_sort(LinkedList* this, int (*pFunc)(void* ,void*), int order)
 int ll_map(LinkedList* this, int (*pFunc)(void*))
 {
 	int returnAux=-1;
-	void* pElemento;
 	if(this !=NULL)
 	{
 		for(int i=0; i<=ll_len(this); i++)
 		{
-			pElemento=ll_get(this,i);
-			pFunc(pElemento);
+			pFunc(ll_get(this,i));
 			returnAux=0;
 		}
 	}

@@ -54,7 +54,7 @@ int parser_AficheFromText(FILE* pFile , LinkedList* pArrayListAfiches)
 	char auxNombreArchivo[5000];
 	char auxZona[5000];
 	char auxACobrar[5000];
-	Cliente* pAfiche;
+	Afiche* pAfiche;
 
 	if(pArrayListAfiches != NULL && pFile != NULL)
 	{
@@ -69,7 +69,7 @@ int parser_AficheFromText(FILE* pFile , LinkedList* pArrayListAfiches)
 			}
 		}while(!feof(pFile));
 	}
-	else printf("\nAnda mal el parser");
+	else printf("\nAnda mal el parser afiche");
     return retorno;
 }
 
